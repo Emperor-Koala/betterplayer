@@ -476,7 +476,7 @@ class BetterPlayerController {
       }
     }
 
-    final startAt = betterPlayerConfiguration.startAt;
+    final startAt = _betterPlayerDataSource?.startAt ?? betterPlayerConfiguration.startAt;
     if (startAt != null) {
       seekTo(startAt);
     }

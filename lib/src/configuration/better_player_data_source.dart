@@ -73,6 +73,9 @@ class BetterPlayerDataSource {
   /// BetterPlayerConfiguration.
   final Widget? placeholder;
 
+  ///How far into this source should playback begin
+  final Duration? startAt;
+
   BetterPlayerDataSource(
     this.type,
     this.url, {
@@ -93,6 +96,7 @@ class BetterPlayerDataSource {
     this.videoExtension,
     this.drmConfiguration,
     this.placeholder,
+    this.startAt,
   }) : assert(
             (type == BetterPlayerDataSourceType.network ||
                     type == BetterPlayerDataSourceType.file) ||
@@ -118,6 +122,7 @@ class BetterPlayerDataSource {
     BetterPlayerVideoFormat? videoFormat,
     BetterPlayerDrmConfiguration? drmConfiguration,
     Widget? placeholder,
+    Duration? startAt,
   }) {
     return BetterPlayerDataSource(
       BetterPlayerDataSourceType.network,
@@ -135,6 +140,7 @@ class BetterPlayerDataSource {
       videoFormat: videoFormat,
       drmConfiguration: drmConfiguration,
       placeholder: placeholder,
+      startAt: startAt,
     );
   }
 
@@ -150,6 +156,7 @@ class BetterPlayerDataSource {
     BetterPlayerNotificationConfiguration? notificationConfiguration,
     Duration? overriddenDuration,
     Widget? placeholder,
+    Duration? startAt,
   }) {
     return BetterPlayerDataSource(
       BetterPlayerDataSourceType.file,
@@ -163,6 +170,7 @@ class BetterPlayerDataSource {
           const BetterPlayerNotificationConfiguration(showNotification: false),
       overriddenDuration: overriddenDuration,
       placeholder: placeholder,
+      startAt: startAt,
     );
   }
 
@@ -179,6 +187,7 @@ class BetterPlayerDataSource {
     BetterPlayerNotificationConfiguration? notificationConfiguration,
     Duration? overriddenDuration,
     Widget? placeholder,
+    Duration? startAt,
   }) {
     return BetterPlayerDataSource(
       BetterPlayerDataSourceType.memory,
@@ -194,6 +203,7 @@ class BetterPlayerDataSource {
           const BetterPlayerNotificationConfiguration(showNotification: false),
       overriddenDuration: overriddenDuration,
       placeholder: placeholder,
+      startAt: startAt,
     );
   }
 
@@ -216,6 +226,7 @@ class BetterPlayerDataSource {
     String? videoExtension,
     BetterPlayerDrmConfiguration? drmConfiguration,
     Widget? placeholder,
+    Duration? startAt,
   }) {
     return BetterPlayerDataSource(
       type ?? this.type,
@@ -236,6 +247,7 @@ class BetterPlayerDataSource {
       videoExtension: videoExtension ?? this.videoExtension,
       drmConfiguration: drmConfiguration ?? this.drmConfiguration,
       placeholder: placeholder ?? this.placeholder,
+      startAt: startAt ?? this.startAt,
     );
   }
 }
