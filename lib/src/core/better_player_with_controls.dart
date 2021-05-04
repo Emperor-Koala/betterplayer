@@ -175,6 +175,8 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
         }
       }
 
+      if (betterPlayerController.betterPlayerDataSource!.customControlsBuilder != null)
+        return betterPlayerController.betterPlayerDataSource!.customControlsBuilder!(betterPlayerController);
       if (controlsConfiguration.customControlsBuilder != null &&
           playerTheme == BetterPlayerTheme.custom) {
         return controlsConfiguration

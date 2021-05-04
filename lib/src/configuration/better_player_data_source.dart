@@ -5,6 +5,7 @@ import 'package:better_player/src/configuration/better_player_drm_configuration.
 import 'package:better_player/src/configuration/better_player_notification_configuration.dart';
 import 'package:better_player/src/configuration/better_player_video_format.dart';
 import 'package:better_player/src/subtitles/better_player_subtitles_source.dart';
+import 'package:better_player/src/core/better_player_controller.dart';
 import 'package:flutter/widgets.dart';
 
 import 'better_player_cache_configuration.dart';
@@ -76,6 +77,9 @@ class BetterPlayerDataSource {
   ///How far into this source should playback begin
   final Duration? startAt;
 
+  ///Custom controls builder for this specific source
+  final Widget Function(BetterPlayerController controller)? customControlsBuilder;
+
   BetterPlayerDataSource(
     this.type,
     this.url, {
@@ -97,6 +101,7 @@ class BetterPlayerDataSource {
     this.drmConfiguration,
     this.placeholder,
     this.startAt,
+    this.customControlsBuilder,
   }) : assert(
             (type == BetterPlayerDataSourceType.network ||
                     type == BetterPlayerDataSourceType.file) ||
@@ -123,6 +128,7 @@ class BetterPlayerDataSource {
     BetterPlayerDrmConfiguration? drmConfiguration,
     Widget? placeholder,
     Duration? startAt,
+    Widget Function(BetterPlayerController controller)? customControlsBuilder,
   }) {
     return BetterPlayerDataSource(
       BetterPlayerDataSourceType.network,
@@ -141,6 +147,7 @@ class BetterPlayerDataSource {
       drmConfiguration: drmConfiguration,
       placeholder: placeholder,
       startAt: startAt,
+      customControlsBuilder: customControlsBuilder,
     );
   }
 
@@ -157,6 +164,7 @@ class BetterPlayerDataSource {
     Duration? overriddenDuration,
     Widget? placeholder,
     Duration? startAt,
+    Widget Function(BetterPlayerController controller)? customControlsBuilder,
   }) {
     return BetterPlayerDataSource(
       BetterPlayerDataSourceType.file,
@@ -171,6 +179,7 @@ class BetterPlayerDataSource {
       overriddenDuration: overriddenDuration,
       placeholder: placeholder,
       startAt: startAt,
+      customControlsBuilder: customControlsBuilder,
     );
   }
 
@@ -188,6 +197,7 @@ class BetterPlayerDataSource {
     Duration? overriddenDuration,
     Widget? placeholder,
     Duration? startAt,
+    Widget Function(BetterPlayerController controller)? customControlsBuilder,
   }) {
     return BetterPlayerDataSource(
       BetterPlayerDataSourceType.memory,
@@ -204,6 +214,7 @@ class BetterPlayerDataSource {
       overriddenDuration: overriddenDuration,
       placeholder: placeholder,
       startAt: startAt,
+      customControlsBuilder: customControlsBuilder,
     );
   }
 
@@ -227,6 +238,7 @@ class BetterPlayerDataSource {
     BetterPlayerDrmConfiguration? drmConfiguration,
     Widget? placeholder,
     Duration? startAt,
+    Widget Function(BetterPlayerController controller)? customControlsBuilder,
   }) {
     return BetterPlayerDataSource(
       type ?? this.type,
@@ -248,6 +260,7 @@ class BetterPlayerDataSource {
       drmConfiguration: drmConfiguration ?? this.drmConfiguration,
       placeholder: placeholder ?? this.placeholder,
       startAt: startAt ?? this.startAt,
+      customControlsBuilder: customControlsBuilder ?? this.customControlsBuilder,
     );
   }
 }
