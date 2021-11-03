@@ -1,5 +1,4 @@
-// Project imports:
-
+import 'package:better_player/src/configuration/better_player_buffering_configuration.dart';
 import 'package:better_player/src/configuration/better_player_data_source_type.dart';
 import 'package:better_player/src/configuration/better_player_drm_configuration.dart';
 import 'package:better_player/src/configuration/better_player_notification_configuration.dart';
@@ -28,20 +27,20 @@ class BetterPlayerDataSource {
   /// Custom headers for player
   final Map<String, String>? headers;
 
-  ///Should player use hls subtitles
-  final bool? useHlsSubtitles;
+  ///Should player use hls / dash subtitles (ASMS - Adaptive Streaming Media Sources).
+  final bool? useAsmsSubtitles;
 
   ///Should player use hls tracks
-  final bool? useHlsTracks;
+  final bool? useAsmsTracks;
 
-  ///Should player use hls audio tracks
-  final bool? useHlsAudioTracks;
+  ///Should player use hls /das audio tracks
+  final bool? useAsmsAudioTracks;
 
   ///List of strings that represents tracks names.
   ///If empty, then better player will choose name based on track parameters
-  final List<String>? hlsTrackNames;
+  final List<String>? asmsTrackNames;
 
-  ///Optional, alternative resolutions for non-hls video. Used to setup
+  ///Optional, alternative resolutions for non-hls/dash video. Used to setup
   ///different qualities for video.
   ///Data should be in given format:
   ///{"360p": "url", "540p": "url2" }
@@ -62,7 +61,7 @@ class BetterPlayerDataSource {
   ///Video format hint when data source url has not valid extension.
   final BetterPlayerVideoFormat? videoFormat;
 
-  ///Extension of video without dot. Used only in memory data source.
+  ///Extension of video without dot.
   final String? videoExtension;
 
   ///Configuration of content protection
@@ -80,6 +79,10 @@ class BetterPlayerDataSource {
   ///Custom controls builder for this specific source
   final Widget Function(BetterPlayerController controller)? customControlsBuilder;
 
+  ///Configuration of video buffering. Currently only supported in Android
+  ///platform.
+  final BetterPlayerBufferingConfiguration bufferingConfiguration;
+
   BetterPlayerDataSource(
     this.type,
     this.url, {
@@ -87,14 +90,16 @@ class BetterPlayerDataSource {
     this.subtitles,
     this.liveStream = false,
     this.headers,
-    this.useHlsSubtitles = true,
-    this.useHlsTracks = true,
-    this.useHlsAudioTracks = true,
-    this.hlsTrackNames,
+    this.useAsmsSubtitles = true,
+    this.useAsmsTracks = true,
+    this.useAsmsAudioTracks = true,
+    this.asmsTrackNames,
     this.resolutions,
     this.cacheConfiguration,
     this.notificationConfiguration =
-        const BetterPlayerNotificationConfiguration(showNotification: false),
+        const BetterPlayerNotificationConfiguration(
+      showNotification: false,
+    ),
     this.overriddenDuration,
     this.videoFormat,
     this.videoExtension,
@@ -102,6 +107,7 @@ class BetterPlayerDataSource {
     this.placeholder,
     this.startAt,
     this.customControlsBuilder,
+    this.bufferingConfiguration = const BetterPlayerBufferingConfiguration(),
   }) : assert(
             (type == BetterPlayerDataSourceType.network ||
                     type == BetterPlayerDataSourceType.file) ||
@@ -116,9 +122,9 @@ class BetterPlayerDataSource {
     List<BetterPlayerSubtitlesSource>? subtitles,
     bool? liveStream,
     Map<String, String>? headers,
-    bool? useHlsSubtitles,
-    bool? useHlsTracks,
-    bool? useHlsAudioTracks,
+    bool? useAsmsSubtitles,
+    bool? useAsmsTracks,
+    bool? useAsmsAudioTracks,
     Map<String, String>? qualities,
     BetterPlayerCacheConfiguration? cacheConfiguration,
     BetterPlayerNotificationConfiguration notificationConfiguration =
@@ -129,6 +135,8 @@ class BetterPlayerDataSource {
     Widget? placeholder,
     Duration? startAt,
     Widget Function(BetterPlayerController controller)? customControlsBuilder,
+    BetterPlayerBufferingConfiguration bufferingConfiguration =
+        const BetterPlayerBufferingConfiguration(),
   }) {
     return BetterPlayerDataSource(
       BetterPlayerDataSourceType.network,
@@ -136,9 +144,9 @@ class BetterPlayerDataSource {
       subtitles: subtitles,
       liveStream: liveStream,
       headers: headers,
-      useHlsSubtitles: useHlsSubtitles,
-      useHlsTracks: useHlsTracks,
-      useHlsAudioTracks: useHlsAudioTracks,
+      useAsmsSubtitles: useAsmsSubtitles,
+      useAsmsTracks: useAsmsTracks,
+      useAsmsAudioTracks: useAsmsAudioTracks,
       resolutions: qualities,
       cacheConfiguration: cacheConfiguration,
       notificationConfiguration: notificationConfiguration,
@@ -148,6 +156,7 @@ class BetterPlayerDataSource {
       placeholder: placeholder,
       startAt: startAt,
       customControlsBuilder: customControlsBuilder,
+      bufferingConfiguration: bufferingConfiguration,
     );
   }
 
@@ -156,8 +165,8 @@ class BetterPlayerDataSource {
   factory BetterPlayerDataSource.file(
     String url, {
     List<BetterPlayerSubtitlesSource>? subtitles,
-    bool? useHlsSubtitles,
-    bool? useHlsTracks,
+    bool? useAsmsSubtitles,
+    bool? useAsmsTracks,
     Map<String, String>? qualities,
     BetterPlayerCacheConfiguration? cacheConfiguration,
     BetterPlayerNotificationConfiguration? notificationConfiguration,
@@ -170,8 +179,8 @@ class BetterPlayerDataSource {
       BetterPlayerDataSourceType.file,
       url,
       subtitles: subtitles,
-      useHlsSubtitles: useHlsSubtitles,
-      useHlsTracks: useHlsTracks,
+      useAsmsSubtitles: useAsmsSubtitles,
+      useAsmsTracks: useAsmsTracks,
       resolutions: qualities,
       cacheConfiguration: cacheConfiguration,
       notificationConfiguration: notificationConfiguration =
@@ -189,8 +198,8 @@ class BetterPlayerDataSource {
     List<int> bytes, {
     String? videoExtension,
     List<BetterPlayerSubtitlesSource>? subtitles,
-    bool? useHlsSubtitles,
-    bool? useHlsTracks,
+    bool? useAsmsSubtitles,
+    bool? useAsmsTracks,
     Map<String, String>? qualities,
     BetterPlayerCacheConfiguration? cacheConfiguration,
     BetterPlayerNotificationConfiguration? notificationConfiguration,
@@ -205,8 +214,8 @@ class BetterPlayerDataSource {
       videoExtension: videoExtension,
       bytes: bytes,
       subtitles: subtitles,
-      useHlsSubtitles: useHlsSubtitles,
-      useHlsTracks: useHlsTracks,
+      useAsmsSubtitles: useAsmsSubtitles,
+      useAsmsTracks: useAsmsTracks,
       resolutions: qualities,
       cacheConfiguration: cacheConfiguration,
       notificationConfiguration: notificationConfiguration =
@@ -225,9 +234,9 @@ class BetterPlayerDataSource {
     List<BetterPlayerSubtitlesSource>? subtitles,
     bool? liveStream,
     Map<String, String>? headers,
-    bool? useHlsSubtitles,
-    bool? useHlsTracks,
-    bool? useHlsAudioTracks,
+    bool? useAsmsSubtitles,
+    bool? useAsmsTracks,
+    bool? useAsmsAudioTracks,
     Map<String, String>? resolutions,
     BetterPlayerCacheConfiguration? cacheConfiguration,
     BetterPlayerNotificationConfiguration? notificationConfiguration =
@@ -239,6 +248,8 @@ class BetterPlayerDataSource {
     Widget? placeholder,
     Duration? startAt,
     Widget Function(BetterPlayerController controller)? customControlsBuilder,
+    BetterPlayerBufferingConfiguration? bufferingConfiguration =
+        const BetterPlayerBufferingConfiguration(),
   }) {
     return BetterPlayerDataSource(
       type ?? this.type,
@@ -247,9 +258,9 @@ class BetterPlayerDataSource {
       subtitles: subtitles ?? this.subtitles,
       liveStream: liveStream ?? this.liveStream,
       headers: headers ?? this.headers,
-      useHlsSubtitles: useHlsSubtitles ?? this.useHlsSubtitles,
-      useHlsTracks: useHlsTracks ?? this.useHlsTracks,
-      useHlsAudioTracks: useHlsAudioTracks ?? this.useHlsAudioTracks,
+      useAsmsSubtitles: useAsmsSubtitles ?? this.useAsmsSubtitles,
+      useAsmsTracks: useAsmsTracks ?? this.useAsmsTracks,
+      useAsmsAudioTracks: useAsmsAudioTracks ?? this.useAsmsAudioTracks,
       resolutions: resolutions ?? this.resolutions,
       cacheConfiguration: cacheConfiguration ?? this.cacheConfiguration,
       notificationConfiguration:
@@ -261,6 +272,8 @@ class BetterPlayerDataSource {
       placeholder: placeholder ?? this.placeholder,
       startAt: startAt ?? this.startAt,
       customControlsBuilder: customControlsBuilder ?? this.customControlsBuilder,
+      bufferingConfiguration:
+          bufferingConfiguration ?? this.bufferingConfiguration,
     );
   }
 }

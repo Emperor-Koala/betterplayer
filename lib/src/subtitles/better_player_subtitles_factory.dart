@@ -1,12 +1,8 @@
-// Dart imports:
 import 'dart:convert';
 import 'dart:io';
-
-// Project imports:
 import 'package:better_player/better_player.dart';
 import 'package:better_player/src/core/better_player_utils.dart';
 import 'package:better_player/src/subtitles/better_player_subtitles_source.dart';
-
 import 'better_player_subtitle.dart';
 import 'better_player_subtitles_source_type.dart';
 
@@ -89,6 +85,11 @@ class BetterPlayerSubtitlesFactory {
     List<String> components = value.split('\r\n\r\n');
     if (components.length == 1) {
       components = value.split('\n\n');
+    }
+
+    // Skip parsing files with no cues
+    if (components.length == 1) {
+      return [];
     }
 
     final List<BetterPlayerSubtitle> subtitlesObj = [];

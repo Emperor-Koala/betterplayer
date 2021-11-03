@@ -39,7 +39,7 @@ class BetterPlayerPlaylistController {
 
   ///Initialize controller and listeners.
   void _setup() {
-    _betterPlayerController = BetterPlayerController(
+    _betterPlayerController ??= BetterPlayerController(
       betterPlayerConfiguration,
       betterPlayerPlaylistConfiguration: betterPlayerPlaylistConfiguration,
     );
@@ -52,13 +52,21 @@ class BetterPlayerPlaylistController {
     _currentDataSourceIndex = initialStartIndex;
     setupDataSource(_currentDataSourceIndex);
     _betterPlayerController!.addEventsListener(_handleEvent);
-    _nextVideoTimeStreamSubscription = _betterPlayerController!
-        .nextVideoTimeStreamController.stream
-        .listen((time) {
+    _nextVideoTimeStreamSubscription =
+        _betterPlayerController!.nextVideoTimeStream.listen((time) {
       if (time != null && time == 0) {
         _onVideoChange();
       }
     });
+  }
+
+  /// Setup new data source list. Pauses currently played video and init new data
+  /// source list. Previous data source list will be removed.
+  void setupDataSourceList(List<BetterPlayerDataSource> dataSourceList) {
+    _betterPlayerController?.pause();
+    _betterPlayerDataSourceList.clear();
+    _betterPlayerDataSourceList.addAll(dataSourceList);
+    _setup();
   }
 
   ///Handle video change signal from BetterPlayerController. Setup new data

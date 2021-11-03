@@ -87,7 +87,10 @@ class BetterPlayerSubtitle {
       }
 
       final component = componentValue.split(':');
-      if (component.length != 3) {
+      // Interpret a missing hour component to mean 00 hours
+      if (component.length == 2) {
+        component.insert(0, "00");
+      } else if (component.length != 3) {
         return const Duration();
       }
 
@@ -107,5 +110,10 @@ class BetterPlayerSubtitle {
       BetterPlayerUtils.log("Failed to process value: $value");
       return const Duration();
     }
+  }
+
+  @override
+  String toString() {
+    return 'BetterPlayerSubtitle{index: $index, start: $start, end: $end, texts: $texts, type: $type}';
   }
 }

@@ -1,3 +1,125 @@
+## 0.0.77
+* Fixed full screen safe area issue in cupertino controls.
+* Fixed subtitles duplication after changing data source.
+* Fixed progress bar issues when changing position of the video.
+* [BREAKING_CHANGE] Changed min. Flutter version to 2.2.3.
+* Changed log level in ExoPlayer to Error.
+* Added url parameter for changedResolution event.
+* Added [videoExtension] support for network data source for scenario where video source has no extension and cache manager requires it.
+* Added parameters to [changedTrack] event.
+* Added [changedPlaylistItem] event.
+* Added [autoDetectFullscreenAspectRatio] parameter in [BetterPlayerConfiguration] (by https://github.com/Brazol)
+* Updated license.
+* Updated screenshots.
+
+## 0.0.76
+* Fixed iOS build issue.
+* [BREAKING_CHANGE] Changed min required iOS version to 11.
+* Updated `BetterPlayerConfiguration` `copyWith` method.
+* Added `useRootNavigator` option to `BetterPlayerConfiguration`.
+
+## 0.0.75
+* Fixed iOS build issue.
+
+## 0.0.74
+* [BREAKING_CHANGE] `nextVideoTimeStreamController` is now marked as private. Please use `nextVideoTimeStream` to access stream.
+* [BREAKING_CHANGE] Removed BackdropFilter from cupertino theme.
+* [BREAKING_CHANGE] Removed `sigmaX` and `sigmaY` parameters from BetterPlayerControlsConfiguration.
+* Added `expandToFill` in `BetterPlayerConfiguration`.
+* Added `BetterPlayerControlsConfiguration.theme` factory for `BetterPlayerControlsConfiguration`.
+* Added null checks in seek commands in `BetterPlayerControlsState`.
+* Added tests.
+* Added iOS HLS caching based on HLSCachingReverseProxyServer.
+* Added default subtitle support for ASMS HLS data source (by https://github.com/siloebb).
+* Fixed issue with live stream where player controls were always visible.
+* Fixed iOS seek issue.
+* Fixed getting started button link in documentation.
+* Changed iOS non-HLS caching implementation based on https://github.com/neekeetab/CachingPlayerItem (by https://github.com/themadmrj).
+* Fixed hardcoded 30 FPS on iOS (by https://github.com/antonkrasov).
+* Enabled `preCache` and `stopPreCache` for iOS.
+* Updated dependencies.
+
+## 0.0.73
+* Added `licenseUrl` support for iOS DRM.
+* Fixed RTL text direction issue in player controls.
+* Added `renderedSubtitle` in `BetterPlayerController`.
+* Added additional check in `postControllerEvent` to handle scenario where event stream is closed.
+* Updated ExoPlayer version
+* Fixed `bufferingUpdate` event triggered too often.
+* Updated video list example with bufering configuration.
+* Updated video list documentation.
+* Added `setMixWithOthers` method in `BetterPlayerListVideoPlayerController`.
+* Fixed broken link in cover page of documentation.
+* Fixed progress bar issue where position could be set above video duration.
+* Fixed iOS remote notification command issue.
+* Removed duplicated page in example app (by https://github.com/pinguluk)
+* Added support for clear key DRM (by https://github.com/tinusneethling)
+* Refreshed look and feel of the player UI (by https://github.com/creativeblaq)
+* Added `sigmaX` and `sigmaY` parameters in BetterPlayerControlsConfiguration to control blur of cupertino controls (original idea by: https://github.com/YeFei572)
+
+## 0.0.72
+* Updated ExoPlayer version
+
+## 0.0.71
+* Fixed play after seeking issue on iOS.
+* Fixed audio track selection issue on iOS/Android.
+* Fixed issue where speed which couldn't be applied on iOS was saved in player state.
+* Added support for D-pad navigation using a Android TV remote control (by https://github.com/danielz-nenda)
+* Added `BetterPlayerMultipleGestureDetector` to handle problems with gesture detection
+* Expose getter for `eventListeners` in `BetterPlayerController` (by https://github.com/Letalus)
+* Updated documentation
+* Updated dependencies
+
+## 0.0.70
+* Fixed file data source exception. Right now user will be only warned.
+* Fixed playback speed after seek in iOS.
+* Fixed `overriddenDuration` behavior in iOS when passed `overriddenDuration` is longer than video duration.
+* Fixed issue where controls were not updated after video finish.
+* Fixed auto full screen orientation not enabled in iOS.
+* Exposed ASMS classes.
+* Exposed BetterPlayerControlsState to provide ways to build custom controls with additional menus.
+* Added error handling for CacheWorker to prevent unexpected crashes.
+* Added support for FairPlay EZDRM (by https://github.com/adrianByv and https://github.com/koldo92)
+* Added `certificateUrl` parameter in BetterPlayerDrmConfiguration.
+* Added support for custom buffering configuration in Android (by https://github.com/Letalus)
+* Added `bufferingConfiguration` parameter in BetterPlayerConfiguration which contains buffering settings.
+
+
+## 0.0.69
+* Fixed cache clear on Android.
+* Added file check for file data source.
+* Fixed issue with black screen for some videos on iOS (by https://github.com/themadmrj)
+* Fixed iOS eventSink issues. (by https://github.com/alextekartik)
+* Added key parameter in BetterPlayerCacheConfiguration to provide way to re-use same video between app sessions.
+
+## 0.0.68
+* Added support for segmented subtitles.
+* Added new fields in in BetterPlayerSubtitlesSource: `asmsIsSegmented`, `asmsSegmentsTime` and ` asmsSegments`. These fields shouldn't be configured
+manually.
+* Fixed parsing VTT subtitle timestamps with no hour component (by https://github.com/trms-alex).
+* Fixed parsing VTT subtitles when there's no subtitles in the file (by https://github.com/trms-alex).
+* Added ES translations (by https://github.com/koldo92).
+* Fixed iOS Picture in Picture play/pause state.
+* Updated dependencies.
+* Updated iOS example configuration.
+
+## 0.0.67
+* Added support for DASH adaptive stream subtitles, audio tracks, tracks (by https://github.com/adrianByv)
+* [BREAKING_CHANGE] Changed useHlsSubtitles, useHlsTracks, useHlsAudio to useAsmsSubtitles, useAsmsTracks, useAsmsAudio.
+* Added DASH example.
+* Fixed progress bar jumps when seeking video.
+* Fixed end of video looping final second, and video stutter during AudioSession deactivation (by https://github.com/NicholasNagy)
+
+## 0.0.66
+* Added check in seek method to handle scenario when video wasn't ready to play.
+* Added setupDataSourceList in BetterPlayerPlaylistController.
+* Fixed playback stalled issue in iOS.
+* Added pause on iOS dispose call.
+* Added bufferedStart, bufferedUpdate, bufferedEnd events.
+* Fixed full screen dismissed when new data source loaded.
+* Added forget option for VisibilityDetectorController (by https://github.com/ChopinDavid).
+* Added vietnamese translations (by https://github.com/thanhvn-57).
+
 ## 0.0.65
 * Refactored Android notification image selection.
 * Added headers parameter in BetterPlayerSubtitlesSource. Headers is an optional parameter.

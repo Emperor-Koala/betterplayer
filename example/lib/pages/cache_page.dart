@@ -20,12 +20,16 @@ class _CachePageState extends State<CachePage> {
     );
     _betterPlayerDataSource = BetterPlayerDataSource(
       BetterPlayerDataSourceType.network,
-      Constants.elephantDreamVideoUrl,
+      Constants.phantomVideoUrl,
       cacheConfiguration: BetterPlayerCacheConfiguration(
-          useCache: true,
-          preCacheSize: 10 * 1024 * 1024,
-          maxCacheSize: 10 * 1024 * 1024,
-          maxCacheFileSize: 10 * 1024 * 1024),
+        useCache: true,
+        preCacheSize: 10 * 1024 * 1024,
+        maxCacheSize: 10 * 1024 * 1024,
+        maxCacheFileSize: 10 * 1024 * 1024,
+
+        ///Android only option to use cached video between app sessions
+        key: "testCacheKey",
+      ),
     );
     _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
     super.initState();

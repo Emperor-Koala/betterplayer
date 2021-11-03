@@ -7,6 +7,7 @@ import 'dart:async';
 import 'dart:ui';
 
 // Flutter imports:
+import 'package:better_player/src/configuration/better_player_buffering_configuration.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
@@ -70,7 +71,8 @@ abstract class VideoPlayerPlatform {
   }
 
   /// Creates an instance of a video player and returns its textureId.
-  Future<int?> create() {
+  Future<int?> create(
+      {BetterPlayerBufferingConfiguration? bufferingConfiguration}) {
     throw UnimplementedError('create() has not been implemented.');
   }
 
@@ -80,7 +82,7 @@ abstract class VideoPlayerPlatform {
   }
 
   /// Pre-caches a video.
-  Future<void> stopPreCache(String url) {
+  Future<void> stopPreCache(String url, String? cacheKey) {
     throw UnimplementedError('stopPreCache() has not been implemented.');
   }
 
@@ -177,7 +179,7 @@ abstract class VideoPlayerPlatform {
 
   // This method makes sure that VideoPlayer isn't implemented with `implements`.
   //
-  // See class doc for more details on why implementing this class is forbidden.
+  // See class docs for more details on why implementing this class is forbidden.
   //
   // This private method is called by the instance setter, which fails if the class is
   // implemented with `implements`.
@@ -217,6 +219,7 @@ class DataSource {
     this.useCache = false,
     this.maxCacheSize = _maxCacheSize,
     this.maxCacheFileSize = _maxCacheFileSize,
+    this.cacheKey,
     this.showNotification = false,
     this.title,
     this.author,
@@ -224,8 +227,11 @@ class DataSource {
     this.notificationChannelName,
     this.overriddenDuration,
     this.licenseUrl,
+    this.certificateUrl,
     this.drmHeaders,
     this.activityName,
+    this.clearKey,
+    this.videoExtension,
   }) : assert(uri == null || asset == null);
 
   /// Describes the type of data source this [VideoPlayerController]
@@ -278,6 +284,8 @@ class DataSource {
 
   final int? maxCacheFileSize;
 
+  final String? cacheKey;
+
   final bool? showNotification;
 
   final String? title;
@@ -292,9 +300,15 @@ class DataSource {
 
   final String? licenseUrl;
 
+  final String? certificateUrl;
+
   final Map<String, String>? drmHeaders;
 
   final String? activityName;
+
+  final String? clearKey;
+
+  final String? videoExtension;
 
   /// Key to compare DataSource
   String get key {
@@ -317,7 +331,7 @@ class DataSource {
 
   @override
   String toString() {
-    return 'DataSource{sourceType: $sourceType, uri: $uri, formatHint:'
+    return 'DataSource{sourceType: $sourceType, uri: $uri certificateUrl: $certificateUrl, formatHint:'
         ' $formatHint, asset: $asset, package: $package, headers: $headers,'
         ' useCache: $useCache,maxCacheSize: $maxCacheSize, maxCacheFileSize: '
         '$maxCacheFileSize, showNotification: $showNotification, title: $title,'
