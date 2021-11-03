@@ -35,7 +35,10 @@ class _VideoProgressBarState
     extends State<BetterPlayerCupertinoVideoProgressBar> {
   _VideoProgressBarState() {
     listener = () {
-      setState(() {});
+      Future.microtask(() {
+        if (mounted)
+          setState(() {});
+      });
     };
   }
 
